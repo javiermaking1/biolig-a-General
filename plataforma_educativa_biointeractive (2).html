@@ -1,0 +1,817 @@
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        scroll-behavior: smooth;
+        background-color: #062319;
+        color: #e2e8f0;
+    }
+    .font-serif-academic {
+        font-family: 'Merriweather', serif;
+    }
+    .text-reading-sm { font-size: 0.95rem; line-height: 1.65; }
+    .text-reading-md { font-size: 1.08rem; line-height: 1.8; }
+    .text-reading-lg { font-size: 1.22rem; line-height: 1.9; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #062319;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #047857;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #10b981;
+    }
+    .topic-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .topic-card:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
+<div id="bio-app" class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+
+    <!-- Header Principal -->
+    <header class="sticky top-0 z-50 bg-emerald-950/95 backdrop-blur-md border-b border-emerald-800/60 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <!-- Logo y Titular Formal -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-600 text-slate-950 p-2.5 rounded-xl font-bold shadow-lg shadow-emerald-900/40">
+                    <i class="fa-solid fa-dna text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-2xl tracking-tight text-emerald-400 font-serif-academic">BioInteractive</h1>
+                    <p class="text-xs text-emerald-200/80 font-medium tracking-wide">COMPENDIO ACADÉMICO INTEGRAL DE CIENCIAS BIOLÓGICAS</p>
+                </div>
+            </div>
+
+            <!-- Buscador y Accesibilidad -->
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="relative w-full md:w-80">
+                    <input type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Buscar temas, palabras clave o reinos..." 
+                           class="w-full pl-9 pr-4 py-2 bg-emerald-900/50 text-emerald-100 placeholder-emerald-300/60 text-sm rounded-lg border border-emerald-700/60 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-emerald-400 text-sm"></i>
+                </div>
+
+                <!-- Botón Desplegable MegaMenu -->
+                <button onclick="toggleMenu()" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition flex items-center gap-2 border border-emerald-500/40 shrink-0">
+                    <i class="fa-solid fa-layer-group"></i> Unidades
+                </button>
+
+                <!-- Tamaño de Texto -->
+                <div class="flex items-center bg-emerald-900/70 rounded-lg p-1 border border-emerald-700/60 shrink-0">
+                    <button onclick="changeFontSize('sm')" title="Disminuir texto" class="px-2 py-0.5 text-xs font-bold text-emerald-200 hover:bg-emerald-800 rounded">A-</button>
+                    <button onclick="changeFontSize('md')" title="Texto normal" class="px-2 py-0.5 text-xs font-bold text-emerald-200 hover:bg-emerald-800 rounded">A</button>
+                    <button onclick="changeFontSize('lg')" title="Aumentar texto" class="px-2 py-0.5 text-xs font-bold text-emerald-200 hover:bg-emerald-800 rounded">A+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MegaMenu Desplegable de Temas -->
+        <div id="megaMenu" class="hidden bg-emerald-950 border-t border-emerald-800/80 shadow-2xl transition-all duration-300 max-h-[80vh] overflow-y-auto">
+            <div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                
+                <!-- Menú Unidad 1 -->
+                <div class="bg-emerald-900/30 p-4 rounded-xl border border-emerald-800/50">
+                    <h3 class="font-bold text-emerald-400 text-base mb-3 flex items-center gap-2 border-b border-emerald-800 pb-2">
+                        <i class="fa-solid fa-atom"></i> Unidad 1: Fundamentos
+                    </h3>
+                    <ul class="space-y-2 text-xs text-emerald-200">
+                        <li><a href="#u1-t1" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 1. ¿Qué es la Biología?</a></li>
+                        <li><a href="#u1-t2" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 2. Origen de la Vida</a></li>
+                        <li><a href="#u1-t3" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 3. Origen de la Humanidad</a></li>
+                        <li><a href="#u1-t4" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 4. Organización de Seres Vivos</a></li>
+                        <li><a href="#u1-t5" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 5. Biomoléculas</a></li>
+                    </ul>
+                </div>
+
+                <!-- Menú Unidad 2 -->
+                <div class="bg-emerald-900/30 p-4 rounded-xl border border-emerald-800/50">
+                    <h3 class="font-bold text-emerald-400 text-base mb-3 flex items-center gap-2 border-b border-emerald-800 pb-2">
+                        <i class="fa-solid fa-microscope"></i> Unidad 2: Biología Celular
+                    </h3>
+                    <ul class="space-y-2 text-xs text-emerald-200">
+                        <li><a href="#u2-t1" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 1. Célula Procariota y Eucariota</a></li>
+                        <li><a href="#u2-t2" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 2. Membrana y Transporte</a></li>
+                        <li><a href="#u2-t3" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 3. Organización Intracelular</a></li>
+                        <li><a href="#u2-t4" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 4. Reacciones Bioquímicas</a></li>
+                        <li><a href="#u2-t5" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 5. Mitosis y Meiosis</a></li>
+                        <li><a href="#u2-t6" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 6. Microbiología</a></li>
+                    </ul>
+                </div>
+
+                <!-- Menú Unidad 3 -->
+                <div class="bg-emerald-900/30 p-4 rounded-xl border border-emerald-800/50">
+                    <h3 class="font-bold text-emerald-400 text-base mb-3 flex items-center gap-2 border-b border-emerald-800 pb-2">
+                        <i class="fa-solid fa-dna"></i> Unidad 3: Genética y Evolución
+                    </h3>
+                    <ul class="space-y-2 text-xs text-emerald-200">
+                        <li><a href="#u3-t1" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 1. Genética y Herencia</a></li>
+                        <li><a href="#u3-t2" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 2. El ADN</a></li>
+                        <li><a href="#u3-t3" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 3. Mutaciones y Evolución</a></li>
+                        <li><a href="#u3-t4" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 4. Biotecnología</a></li>
+                    </ul>
+                </div>
+
+                <!-- Menú Unidad 4 -->
+                <div class="bg-emerald-900/30 p-4 rounded-xl border border-emerald-800/50">
+                    <h3 class="font-bold text-emerald-400 text-base mb-3 flex items-center gap-2 border-b border-emerald-800 pb-2">
+                        <i class="fa-solid fa-tree"></i> Unidad 4: Biodiversidad y Ecología
+                    </h3>
+                    <ul class="space-y-2 text-xs text-emerald-200">
+                        <li><a href="#u4-t1" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 1. Taxonomía y Clasificación</a></li>
+                        <li><a href="#u4-t2" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 2. Virus y Priones</a></li>
+                        <li><a href="#u4-t3" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 3. Reino Monera</a></li>
+                        <li><a href="#u4-t4" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 4. Reino Protista</a></li>
+                        <li><a href="#u4-t5" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 5. Reino Fungi</a></li>
+                        <li><a href="#u4-t6" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 6. Reino Animalia</a></li>
+                        <li><a href="#u4-t7" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 7. Reino Plantae</a></li>
+                        <li><a href="#u4-t8" onclick="toggleMenu()" class="hover:text-white hover:underline flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-emerald-500"></i> 8. Ecología</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Estructura Principal de Dos Columnas -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Navegación Lateral Sticky -->
+        <aside class="lg:col-span-1">
+            <div class="bg-emerald-950/80 p-5 rounded-2xl border border-emerald-800/60 shadow-lg sticky top-24 space-y-4 max-h-[82vh] overflow-y-auto">
+                <div class="border-b border-emerald-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-compass"></i> Índice de Navegación
+                    </h2>
+                    <span class="text-[10px] bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded font-mono">23 Temas</span>
+                </div>
+
+                <nav class="space-y-4 text-xs">
+                    <!-- Unidad 1 Links -->
+                    <div>
+                        <a href="#unidad-1" class="font-bold text-emerald-300 uppercase tracking-wider block mb-1 hover:text-white">Unidad 1: Fundamentos</a>
+                        <ul class="pl-2 space-y-1 border-l border-emerald-800 text-slate-300">
+                            <li><a href="#u1-t1" class="block hover:text-emerald-400 py-0.5 truncate">1. ¿Qué es la Biología?</a></li>
+                            <li><a href="#u1-t2" class="block hover:text-emerald-400 py-0.5 truncate">2. Origen de la Vida</a></li>
+                            <li><a href="#u1-t3" class="block hover:text-emerald-400 py-0.5 truncate">3. Origen de la Humanidad</a></li>
+                            <li><a href="#u1-t4" class="block hover:text-emerald-400 py-0.5 truncate">4. Organización de Seres Vivos</a></li>
+                            <li><a href="#u1-t5" class="block hover:text-emerald-400 py-0.5 truncate">5. Biomoléculas</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Unidad 2 Links -->
+                    <div>
+                        <a href="#unidad-2" class="font-bold text-emerald-300 uppercase tracking-wider block mb-1 hover:text-white">Unidad 2: Célula y Microbio</a>
+                        <ul class="pl-2 space-y-1 border-l border-emerald-800 text-slate-300">
+                            <li><a href="#u2-t1" class="block hover:text-emerald-400 py-0.5 truncate">1. La Célula</a></li>
+                            <li><a href="#u2-t2" class="block hover:text-emerald-400 py-0.5 truncate">2. Membrana y Transporte</a></li>
+                            <li><a href="#u2-t3" class="block hover:text-emerald-400 py-0.5 truncate">3. Organización Intracelular</a></li>
+                            <li><a href="#u2-t4" class="block hover:text-emerald-400 py-0.5 truncate">4. Reacciones Bioquímicas</a></li>
+                            <li><a href="#u2-t5" class="block hover:text-emerald-400 py-0.5 truncate">5. Mitosis y Meiosis</a></li>
+                            <li><a href="#u2-t6" class="block hover:text-emerald-400 py-0.5 truncate">6. Microbiología</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Unidad 3 Links -->
+                    <div>
+                        <a href="#unidad-3" class="font-bold text-emerald-300 uppercase tracking-wider block mb-1 hover:text-white">Unidad 3: Genética y Evolución</a>
+                        <ul class="pl-2 space-y-1 border-l border-emerald-800 text-slate-300">
+                            <li><a href="#u3-t1" class="block hover:text-emerald-400 py-0.5 truncate">1. Genética y Herencia</a></li>
+                            <li><a href="#u3-t2" class="block hover:text-emerald-400 py-0.5 truncate">2. El ADN</a></li>
+                            <li><a href="#u3-t3" class="block hover:text-emerald-400 py-0.5 truncate">3. Mutaciones y Evolución</a></li>
+                            <li><a href="#u3-t4" class="block hover:text-emerald-400 py-0.5 truncate">4. Biotecnología</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Unidad 4 Links -->
+                    <div>
+                        <a href="#unidad-4" class="font-bold text-emerald-300 uppercase tracking-wider block mb-1 hover:text-white">Unidad 4: Taxonomía y Reinos</a>
+                        <ul class="pl-2 space-y-1 border-l border-emerald-800 text-slate-300">
+                            <li><a href="#u4-t1" class="block hover:text-emerald-400 py-0.5 truncate">1. Taxonomía y Clasificación</a></li>
+                            <li><a href="#u4-t2" class="block hover:text-emerald-400 py-0.5 truncate">2. Virus y Priones</a></li>
+                            <li><a href="#u4-t3" class="block hover:text-emerald-400 py-0.5 truncate">3. Reino Monera</a></li>
+                            <li><a href="#u4-t4" class="block hover:text-emerald-400 py-0.5 truncate">4. Reino Protista</a></li>
+                            <li><a href="#u4-t5" class="block hover:text-emerald-400 py-0.5 truncate">5. Reino Fungi</a></li>
+                            <li><a href="#u4-t6" class="block hover:text-emerald-400 py-0.5 truncate">6. Reino Animalia</a></li>
+                            <li><a href="#u4-t7" class="block hover:text-emerald-400 py-0.5 truncate">7. Reino Plantae</a></li>
+                            <li><a href="#u4-t8" class="block hover:text-emerald-400 py-0.5 truncate">8. Ecología</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Área Principal de Desarrollo Teórico -->
+        <main id="contentArea" class="lg:col-span-3 space-y-16 text-reading-md">
+
+            <!-- UNIDAD 1 -->
+            <section id="unidad-1" class="space-y-8">
+                <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-6 sm:p-8 rounded-2xl border border-emerald-700/60 shadow-xl">
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold rounded-full uppercase tracking-wider">Unidad Didáctica 1</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2 font-serif-academic">Fundamentos de la Biología y Biomoléculas</h2>
+                    <p class="text-emerald-200/90 text-sm mt-2">Bases epistemológicas, teorías del origen de los organismos y de la especie humana, organización estructural de la materia viva y química de las biomoléculas.</p>
+                </div>
+
+                <!-- U1 Tema 1 -->
+                <article id="u1-t1" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">1. ¿Qué es la Biología?</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U1.1</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La <strong>Biología</strong> (del griego <em>bios</em>, vida, y <em>logos</em>, estudio) es la ciencia natural orientada a la investigación de las estructuras, funciones, desarrollo, evolución y distribución de los seres vivos. Emplea el método científico empírico mediante observación, planteamiento de hipótesis, experimentación y formulación de leyes y teorías.</p>
+                            <div class="bg-emerald-950/60 p-4 rounded-xl border border-emerald-800/40 text-xs text-emerald-200 space-y-1">
+                                <span class="font-bold text-emerald-300 block">Principales Ramas de la Biología:</span>
+                                <p>• <strong>Anatomía y Fisiología:</strong> Estructura y funcionamiento mecánico de órganos.</p>
+                                <p>• <strong>Genética y Citología:</strong> Herencia molecular y arquitectura celular.</p>
+                                <p>• <strong>Ecología y Sistemática:</strong> Interacción de organismos con el entorno y su clasificación.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Investigacion+Biologica'" 
+                                 alt="Investigación Biológica" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U1 Tema 2 -->
+                <article id="u1-t2" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">2. Teorías del Origen de la Vida</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U1.2</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Origen+de+la+Vida'" 
+                                 alt="Océano Prebiótico" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>El estudio del origen de la vida busca explicar la transición desde sistemas de química inorgánica hacia la primera entidad viva autorreplicante (protobionte).</p>
+                            <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                                <li><strong>Teoría Química / Quimiosintética (Oparin-Haldane):</strong> Propone que la atmósfera reductora de la Tierra primitiva sintetizó monómeros orgánicos disueltos en los océanos ("sopa prebiótica"), validado por el experimento de Miller-Urey (1953).</li>
+                                <li><strong>Teoría de la Panspermia:</strong> Plantea que los compuestos orgánicos o microorganismos extremófilos llegaron a la Tierra en meteoritos o cometas procedentes del espacio exterior.</li>
+                                <li><strong>Fuentes Hidrotermales Profundas:</strong> Postula el origen biótico en las chimeneas volcánicas oceánicas por gradientes quimioosmóticos y térmicos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U1 Tema 3 -->
+                <article id="u1-t3" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">3. Teorías del Origen de la Humanidad</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U1.3</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>El origen del ser humano (antropogénesis) analiza el proceso paleoantropológico de la tribu <em>Hominina</em>. La evidencia fósil y el análisis filogenético confirman que los ancestros humanos divergieron del linaje de los primates en África hace aproximadamente 6-7 millones de años.</p>
+                            <p class="text-sm">Modelos evolutivos principales:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Modelo de Sustitución ("Out of Africa"):</strong> Sostiene que <em>Homo sapiens</em> evolucionó únicamente en África Oriental hace unos 200,000 años y migró reemplazando a otros homínidos.</li>
+                                <li><strong>Modelo Multirregional:</strong> Sugiere que las poblaciones humanas modernas evolucionaron paralelamente en distintos continentes a partir de poblaciones de <em>Homo erectus</em> con flujo génico continuo.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Origen+Humano'" 
+                                 alt="Paleoantropología" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U1 Tema 4 -->
+                <article id="u1-t4" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">4. Organización de los Seres Vivos</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U1.4</span>
+                    </div>
+                    <div class="space-y-4">
+                        <p>La materia viva se organiza de forma jerárquica y multinivel, donde cada nivel emergente posee propiedades superiores a la suma de sus componentes inferiores.</p>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs text-center">
+                            <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/60">
+                                <span class="text-emerald-400 font-bold block mb-1">Nivel Químico</span>
+                                Átomos (Bioelementos: C, H, O, N, P, S) &rarr; Moléculas &rarr; Macromoléculas
+                            </div>
+                            <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/60">
+                                <span class="text-emerald-400 font-bold block mb-1">Nivel Celular</span>
+                                Organelos &rarr; Célula (Unidad anatomo-funcional mínima de la vida)
+                            </div>
+                            <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/60">
+                                <span class="text-emerald-400 font-bold block mb-1">Nivel Orgánico</span>
+                                Tejidos &rarr; Órganos &rarr; Sistemas de órganos &rarr; Individuo
+                            </div>
+                            <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/60">
+                                <span class="text-emerald-400 font-bold block mb-1">Nivel Ecológico</span>
+                                Población &rarr; Comunidad &rarr; Ecosistema &rarr; Biosfera
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U1 Tema 5 -->
+                <article id="u1-t5" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">5. Biomoléculas</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U1.5</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Las biomoléculas son los compuestos químicos sintetizados por los seres vivos. Se dividen en <strong>inorgánicas</strong> (agua, sales minerales) y <strong>orgánicas</strong> (basadas en esqueletos de carbono):</p>
+                            <div class="grid sm:grid-cols-2 gap-3 text-xs">
+                                <div class="bg-emerald-950/70 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300 block">Carbohidratos (Glúcidos)</strong>
+                                    Monómeros: Monosacáridos (Glucosa). Función de reserva energética rápida y estructural (celulosa, quitina).
+                                </div>
+                                <div class="bg-emerald-950/70 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300 block">Lípidos</strong>
+                                    Ácidos grasos y glicerol. Reserva a largo plazo, bicapas membranosas (fosfolípidos) y hormonas.
+                                </div>
+                                <div class="bg-emerald-950/70 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300 block">Proteínas</strong>
+                                    Monómeros: Aminoácidos (unidos por enlace peptídico). Función enzimática, estructural (colágeno) y transporte.
+                                </div>
+                                <div class="bg-emerald-950/70 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300 block">Ácidos Nucleicos</strong>
+                                    Monómeros: Nucleótidos. Almacenamiento y expresión de información genética (ADN y ARN).
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Biomoleculas'" 
+                                 alt="Estructura Biomolecular" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- UNIDAD 2 -->
+            <section id="unidad-2" class="space-y-8">
+                <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-6 sm:p-8 rounded-2xl border border-emerald-700/60 shadow-xl">
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold rounded-full uppercase tracking-wider">Unidad Didáctica 2</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2 font-serif-academic">Biología Celular y Microbiología</h2>
+                    <p class="text-emerald-200/90 text-sm mt-2">Morfología celular, dinámica de membrana, metabolismo bioquímico, ciclos de división de cromosomas y diversidad del mundo microscópico.</p>
+                </div>
+
+                <!-- U2 Tema 1 -->
+                <article id="u2-t1" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">1. La Célula (Procariota y Eucariota)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.1</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Celulas+Microscopio'" 
+                                 alt="Células Eucariotas" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La célula es la unidad de vida básica. Se divide en dos dominios morfológicos fundamentales:</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300">Células Procariotas:</strong> Carecen de núcleo verdadero delimitado por membrana. Su ADN circular se ubica en el nucleoide. No poseen organelos membranosos membranados (Bacterias y Arqueas).
+                                </div>
+                                <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                    <strong class="text-emerald-300">Células Eucariotas:</strong> Poseen núcleo celular definido envolviendo los cromosomas lineales y un complejo endomembranoso interno (Animales, Plantas, Hongos y Protistas).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U2 Tema 2 -->
+                <article id="u2-t2" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">2. Membrana Plasmática y Transporte Celular</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.2</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La membrana plasmática responde al modelo de <strong>Mosaico Fluido</strong> (Singer y Nicolson), constituida por una bicapa de fosfolípidos con proteínas integrales, periféricas y colesterol.</p>
+                            <p class="text-sm">Mecanismos de intercambio:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Transporte Pasivo (Sin gasto de ATP):</strong> Difusión simple, difusión facilitada por canales proteicos y ósmosis (movimiento de agua hacia soluciones de mayor concentración).</li>
+                                <li><strong>Transporte Activo (Con gasto de ATP):</strong> Contra gradiente electroquímico (ejemplo: bomba Na+/K+ ATPasa).</li>
+                                <li><strong>Transporte en Masa:</strong> Endocitosis (fagocitosis/pinocitosis) y exocitosis vesicular.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Membrana+Celular'" 
+                                 alt="Membrana Plasmática" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U2 Tema 3 -->
+                <article id="u2-t3" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">3. Organización Intracelular (Componentes Celulares)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.3</span>
+                    </div>
+                    <div class="space-y-3">
+                        <p>El citoplasma celular alberga organelos membranosos especializados en distintas tareas de procesamiento:</p>
+                        <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Núcleo Celular</strong>
+                                Envoltorio con poros nucleares que resguarda la cromatina y alberga el nucléolo (síntesis de ribosomas).
+                            </div>
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Mitocondrias</strong>
+                                Central energética aeróbica. Realizan el Ciclo de Krebs y la cadena de transporte de electrones para formar ATP.
+                            </div>
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Retículo Endoplásmico</strong>
+                                RER (síntesis de proteínas por ribosomas asociados) y REL (síntesis de lípidos y desintoxicación).
+                            </div>
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Aparato de Golgi</strong>
+                                Empaquetamiento, glicosilación y secreción de proteínas y moléculas en vesículas.
+                            </div>
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Lisosomas y Peroxisomas</strong>
+                                Digestión celular hidrolítica y degradación de peróxidos metabólicos.
+                            </div>
+                            <div class="bg-emerald-950/60 p-3 rounded-lg border border-emerald-800/40">
+                                <strong class="text-emerald-300 block">Cloroplastos (Vegetales)</strong>
+                                Organelo fotosintético provisto de tilacoides y estroma con clorofila.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U2 Tema 4 -->
+                <article id="u2-t4" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">4. Principales Reacciones Bioquímicas dentro de la Célula</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.4</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>El metabolismo comprende la totalidad de transformaciones catalizadas por enzimas dentro del sistema celular:</p>
+                            <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                                <li><strong>Anabolismo (Fotosíntesis):</strong> Fijación de $CO_2$ y agua utilizando fotones de luz para producir glucosa y $O_2$ libre en los cloroplastos.</li>
+                                <li><strong>Catabolismo (Respiración Celular Aeróbica):</strong> Degradación de la glucosa en 3 etapas: Glucólisis (citoplasma), Ciclo de Krebs (matriz mitocondrial) y Fosforilación Oxidativa (crestería mitocondrial), rindiendo 30-32 ATP.</li>
+                                <li><strong>Fermentación (Vía Anaeróbica):</strong> Degradación incompleta de piruvato en ausencia de oxígeno (fermentación láctica o alcohólica).</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Fotosintesis+y+Metabolismo'" 
+                                 alt="Procesos Metabólicos" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U2 Tema 5 -->
+                <article id="u2-t5" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">5. Mitosis y Meiosis</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.5</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-emerald-950/80 p-4 rounded-xl border border-emerald-800/60 space-y-2">
+                            <h4 class="font-bold text-emerald-400 text-sm">Mitosis (Células Somáticas)</h4>
+                            <p>División celular asexual que conserva la cantidad de cromosomas. Una célula madre diploide ($2n$) genera 2 células hijas diploides ($2n$) idénticas.</p>
+                            <p class="text-slate-300">Fases: Profase &rarr; Metafase &rarr; Anafase &rarr; Telofase.</p>
+                        </div>
+                        <div class="bg-emerald-950/80 p-4 rounded-xl border border-emerald-800/60 space-y-2">
+                            <h4 class="font-bold text-emerald-400 text-sm">Meiosis (Células Germinales)</h4>
+                            <p>División celular especializada para la formación de gametos. Una célula madre diploide ($2n$) realiza dos divisiones seguidas produciendo 4 gametos haploides ($1n$).</p>
+                            <p class="text-slate-300">Incluye recombinación génica (entrecruzamiento) en Profase I.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U2 Tema 6 -->
+                <article id="u2-t6" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">6. Microbiología</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U2.6</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1583912267670-657592e31a19?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Microbiologia'" 
+                                 alt="Cultivo Microbiológico" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La <strong>Microbiología</strong> es la ciencia que se encarga del estudio de los microorganismos microscópicos uniloculares o acelulares. Comprende el análisis bacteriológico, micológico, virológico y parasitológico, evaluando su papel en los ciclos biogeoquímicos, la biotecnología médica y la patogénesis de infecciones.</p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- UNIDAD 3 -->
+            <section id="unidad-3" class="space-y-8">
+                <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-6 sm:p-8 rounded-2xl border border-emerald-700/60 shadow-xl">
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold rounded-full uppercase tracking-wider">Unidad Didáctica 3</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2 font-serif-academic">Genética, ADN y Evolución</h2>
+                    <p class="text-emerald-200/90 text-sm mt-2">Leyes de herencia mendeliana, bioquímica del código genético, mutaciones moleculares, motores evolutivos y biotecnología aplicada.</p>
+                </div>
+
+                <!-- U3 Tema 1 -->
+                <article id="u3-t1" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">1. Genética y Herencia</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U3.1</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La genética analiza cómo se transmiten los caracteres fenotípicos entre generaciones. Gregor Mendel estableció los principios teóricos fundamentales:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Primera Ley (Uniformidad):</strong> La primera generación híbrida ($F_1$) expresa de forma uniforme el alelo dominante.</li>
+                                <li><strong>Segunda Ley (Segregación):</strong> Los alelos de un gen se separan durante la formación de gametos, reapareciendo el rasgo recesivo en proporción 3:1 en $F_2$.</li>
+                                <li><strong>Tercera Ley (Independencia):</strong> Los genes de distintos rasgos se distribuyen de manera independiente.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Genetica+Mendel'" 
+                                 alt="Genética" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U3 Tema 2 -->
+                <article id="u3-t2" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">2. El ADN (Ácido Desoxirribonucleico)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U3.2</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Estructura+ADN'" 
+                                 alt="Doble Hélice de ADN" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>El ADN es la polimolécula portadora de las instrucciones genéticas. Descrito por Watson, Crick y Franklin en 1953 como una <strong>doble hélice antiparalela</strong>.</p>
+                            <p class="text-sm">Bases nitrogenadas: Adenina (A) empareja con Timina (T); Citocina (C) empareja con Guanina (G).</p>
+                            <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/40 text-xs text-emerald-200">
+                                <strong>Dogma Central:</strong> Replicación de ADN &rarr; Transcripción a ARNm en núcleo &rarr; Traducción en ribosomas a Proteínas.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U3 Tema 3 -->
+                <article id="u3-t3" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">3. Mutaciones y Evolución</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U3.3</span>
+                    </div>
+                    <div class="space-y-3">
+                        <p>Las <strong>mutaciones</strong> son alteraciones aleatorias en la secuencia de nucleótidos del genoma. Son la fuente primaria de variabilidad genética sobre la cual actúa la <strong>selección natural</strong> (Charles Darwin), la deriva genética y el flujo génico para impulsar el proceso evolutivo de las especies.</p>
+                    </div>
+                </article>
+
+                <!-- U3 Tema 4 -->
+                <article id="u3-t4" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">4. Biotecnología</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U3.4</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Aplica principios de biología molecular y genética para desarrollar tecnologías y productos terapéuticos o agrícolas:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Ingeniería Genética:</strong> ADN recombinante y organismos genéticamente modificados (OGM).</li>
+                                <li><strong>PCR (Reacción en Cadena de la Polimerasa):</strong> Amplificación in vitro de secuencias específicas de ADN.</li>
+                                <li><strong>Edición Genómica (CRISPR-Cas9):</strong> Corte de precisión nucleídica para corrección génica.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Biotecnologia'" 
+                                 alt="Laboratorio Biotecnológico" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- UNIDAD 4 -->
+            <section id="unidad-4" class="space-y-8">
+                <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-6 sm:p-8 rounded-2xl border border-emerald-700/60 shadow-xl">
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold rounded-full uppercase tracking-wider">Unidad Didáctica 4</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2 font-serif-academic">Taxonomía, Reinos de la Naturaleza y Ecología</h2>
+                    <p class="text-emerald-200/90 text-sm mt-2">Sistemática biológica, agentes acelulares, caraterísticas de los grandes reinos de la vida e interacciones bióticas con el medio ambiente.</p>
+                </div>
+
+                <!-- U4 Tema 1 -->
+                <article id="u4-t1" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">1. Taxonomía y Clasificación</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.1</span>
+                    </div>
+                    <div class="space-y-3">
+                        <p>La <strong>Taxonomía</strong> es la disciplina biológica encargada de nombrar, describir y clasificar jerárquicamente a los seres vivos. Fundada por Carlos Linneo mediante la <strong>Nomenclatura Binominal</strong> (Género y especie en latín, ej. <em>Homo sapiens</em>).</p>
+                        <div class="bg-emerald-950 p-3 rounded-lg border border-emerald-800/40 text-xs text-emerald-200">
+                            <strong>Jerarquía Taxonómica:</strong> Dominio &rarr; Reino &rarr; Filo &rarr; Clase &rarr; Orden &rarr; Familia &rarr; Género &rarr; Especie.
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 2 -->
+                <article id="u4-t2" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">2. Virus y Priones</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.2</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Entidades acelulares patógenas no consideradas seres vivos independientes al carecer de metabolismo propio:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Virus:</strong> Fragmentos de ácido nucleico (ADN o ARN) cubiertos por una cápside proteica y en ocasiones envoltura lipídica. Requieren infectar una célula huésped para reproducirse (ciclo lítico o lisogénico).</li>
+                                <li><strong>Priones:</strong> Proteínas infecciosas mal plegadas ($PrP^{Sc}$) sin material genético que inducen el mal plegamiento en proteínas sanas cerebrales.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Estructura+Viral'" 
+                                 alt="Partícula Viral" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 3 -->
+                <article id="u4-t3" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">3. Reino Monera (Bacterias y Arqueas)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.3</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Reino+Monera'" 
+                                 alt="Bacterias" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Organismos unicelulares procariotas. Comprende dos dominios fitogenéticos:</p>
+                            <p class="text-sm">• <strong>Bacteria:</strong> Pared celular con peptidoglucano. Clasificables según la tinción de Gram (Gram positivas / Gram negativas).</p>
+                            <p class="text-sm">• <strong>Archaea:</strong> Membrana celular con enlaces éter adaptada a condiciones extremas (termoacidófilas, halófilas, metanógenas).</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 4 -->
+                <article id="u4-t4" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">4. Reino Protista (Protoctistas)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.4</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Grupo parafilético de eucariotas que no encajan en animales, plantas o hongos. Incluye <strong>protozoos</strong> heterótrofos (con cilios, flagelos o pseudópodos), <strong>algas</strong> autótrofas unicelulares/multicelulares y mohos mucilaginosos.</p>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Reino+Protista'" 
+                                 alt="Microorganismo Protista" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 5 -->
+                <article id="u4-t5" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">5. Reino Fungi (Hongos)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.5</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Reino+Fungi'" 
+                                 alt="Hongos Bosque" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Organismos eucariotas heterótrofos por absorción. Poseen paredes celulares compuestas de <strong>quitina</strong>. Su cuerpo estructural está constituido por filamentaciones llamadas <strong>hifas</strong>, las cuales forman una red denominada <strong>micelio</strong>. Reproducción mediante esporas sexual o asexualmente.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 6 -->
+                <article id="u4-t6" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">6. Reino Animalia (Animales)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.6</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Organismos eucariotas multicelulares y heterótrofos por ingestión. Tienen motilidad en alguna fase del ciclo biológico y desarrollo embrionario blastular:</p>
+                            <p class="text-sm">• <strong>Invertebrados:</strong> Poríferos, Cnidarios, Plathelmintos, Anélidos, Moluscos, Artrópodos y Equinodermos.</p>
+                            <p class="text-sm">• <strong>Vertebrados (Cordados):</strong> Peces, Anfibios, Reptiles, Aves y Mamíferos.</p>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef9?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Reino+Animalia'" 
+                                 alt="Fauna Animal" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 7 -->
+                <article id="u4-t7" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">7. Reino Plantae (Plantas)</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.7</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Reino+Plantae'" 
+                                 alt="Vegetación Frondosa" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                        <div class="md:col-span-2 space-y-3">
+                            <p>Eucariotas multicelulares autótrofos fotosintéticos con pared celular de celulosa:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-slate-300">
+                                <li><strong>Briófitas:</strong> Sin vasos conductores (musgos).</li>
+                                <li><strong>Pteridófitas:</strong> Vasculares sin semilla (helechos).</li>
+                                <li><strong>Gimnospermas:</strong> Vasculares con semillas desnudas en conos (pinos).</li>
+                                <li><strong>Angiospermas:</strong> Plantas con flores y semillas protegidas en frutos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- U4 Tema 8 -->
+                <article id="u4-t8" class="topic-card bg-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-900/60 shadow-md space-y-5">
+                    <div class="flex items-center justify-between border-b border-emerald-900/80 pb-3">
+                        <h3 class="text-xl font-bold text-emerald-400 font-serif-academic">8. Ecología</h3>
+                        <span class="text-xs text-emerald-300 font-mono">U4.8</span>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 items-center">
+                        <div class="md:col-span-2 space-y-3">
+                            <p>La <strong>Ecología</strong> investiga las relaciones recíprocas entre los seres vivos y su medio ambiente biótico y abiótico. Analiza el flujo de energía en las redes tróficas, los niveles de pirámide energética, la dinámica de poblaciones y los ciclos biogeoquímicos (Agua, Carbono, Nitrógeno, Fósforo) que sostienen la Biosfera.</p>
+                        </div>
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" 
+                                 onerror="this.src='https://placehold.co/600x400/064e3b/ffffff?text=Ecologia+y+Bosque'" 
+                                 alt="Ecosistema Natural" class="rounded-xl shadow-lg border border-emerald-800/60 w-full h-48 object-cover">
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="bg-emerald-950 border-t border-emerald-800/80 text-emerald-400/80 text-xs py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-bold text-emerald-300">BioInteractive &copy; Portal Educativo e Informativo de Biología</p>
+            <p>Estructura Curricular Completa: 4 Unidades Temáticas - 23 Módulos de Información y Registro Gráfico Científico.</p>
+        </div>
+    </footer>
+
+</div>
+
+<!-- JavaScript de Interactividad y Control -->
+<script>
+    // Conmutador del Menú Desplegable
+    function toggleMenu() {
+        const menu = document.getElementById('megaMenu');
+        menu.classList.toggle('hidden');
+    }
+
+    // Filtro de Búsqueda Dinámica sobre todos los Temas
+    function filterTopics() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const articles = document.querySelectorAll('.topic-card');
+
+        articles.forEach(article => {
+            const text = article.innerText.toLowerCase();
+            if (query === '' || text.includes(query)) {
+                article.style.display = 'block';
+            } else {
+                article.style.display = 'none';
+            }
+        });
+    }
+
+    // Cambiador de Tamaño de Fuente
+    function changeFontSize(size) {
+        const content = document.getElementById('contentArea');
+        content.classList.remove('text-reading-sm', 'text-reading-md', 'text-reading-lg');
+        if (size === 'sm') {
+            content.classList.add('text-reading-sm');
+        } else if (size === 'md') {
+            content.classList.add('text-reading-md');
+        } else if (size === 'lg') {
+            content.classList.add('text-reading-lg');
+        }
+    }
+</script>
